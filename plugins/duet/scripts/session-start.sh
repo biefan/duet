@@ -13,7 +13,9 @@ else
 fi
 [ -n "${cwd:-}" ] && cd "$cwd" 2>/dev/null || true
 
-f=".duet/next.md"
+# .duet 在 git 顶层(子目录开会话也要能接上);非 git 仓库退化到当前目录
+root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+f="$root/.duet/next.md"
 [ -f "$f" ] || exit 0
 
 # 上限:最多前 15 行;超出则加省略提示,避免上下文膨胀

@@ -23,9 +23,10 @@ case "$file" in
     command -v prettier >/dev/null 2>&1 && prettier --write "$file" >/dev/null 2>&1 || true
     ;;
   *.py)
+    # 只做 format,不做 check --fix:--fix 会删“暂未使用”的 import,
+    # 与小步实现打架(第一步加 import、第二步才用,中间就被删了)。fix 留给 /duet:ship 收拾阶段。
     if command -v ruff >/dev/null 2>&1; then
       ruff format "$file" >/dev/null 2>&1 || true
-      ruff check --fix "$file" >/dev/null 2>&1 || true
     elif command -v black >/dev/null 2>&1; then
       black -q "$file" >/dev/null 2>&1 || true
     fi

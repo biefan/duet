@@ -21,15 +21,18 @@ sid="$(getf '.session_id')"
 cwd="$(getf '.cwd')"
 [ -n "${cwd:-}" ] && cd "$cwd" 2>/dev/null || true
 
-# 仅在 git 仓库里生效
-git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
+# 仅在 git 仓库里生效;定位到仓库顶层——/duet:init 的 .duet 建在顶层,子目录会话也要能找到
+root="$(git rev-parse --show-toplevel 2>/dev/null)" && [ -n "$root" ] || exit 0
+cd "$root" 2>/dev/null || exit 0
 
-# 有未提交的“代码类”改动才提醒
-changes="$(git status --porcelain 2>/dev/null \
+# 仅在用过 duet 的项目里生效(跑过 /duet:init 或 ship 写过 next.md)——不向别的仓库写任何文件
+[ -d .duet ] || exit 0
+
+# 有未提交的“代码类”改动才提醒(-uall:未跟踪目录也逐文件列出,否则整个新目录只显示 “?? dir/” 而漏检)
+changes="$(git status --porcelain -uall 2>/dev/null \
   | grep -cE '\.(ts|tsx|js|jsx|mjs|cjs|py|rs|go|java|kt|rb|php|c|cc|cpp|h|hpp|cs|swift|scala)$' || true)"
 [ "${changes:-0}" -gt 0 ] || exit 0
 
-mkdir -p .duet 2>/dev/null || true
 # duet 自身运行时文件不入库(即使项目没配根 .gitignore)
 [ -f .duet/.gitignore ] || printf 'next.md\n.reminded-sessions\n.last-remind\n' > .duet/.gitignore 2>/dev/null || true
 

@@ -19,7 +19,7 @@ Claude × Codex(GPT-5.5)双引擎、低疲劳的干净开发工作流。
 | `/duet:ship` | 手动打(做完/收工/提交前) | 收工门禁:收拾+验证+确认看过 diff+提示 Codex 复审+记下一步 |
 | auto-tidy | 全自动(改完文件即触发) | 自动格式化,乱不过夜 |
 | 收工连续性 | 全自动(每次开会话) | 顶出上次的 `.duet/next.md`,接上活 |
-| 轻提醒 | 全自动(该收工还没 ship 时) | 有未提交代码改动就戳一下(每会话仅一次) |
+| 轻提醒 | 全自动(该收工还没 ship 时) | 有未提交代码改动就戳一下(每会话仅一次;仅在用过 duet 的项目,即 `.duet/` 存在) |
 
 配合 codex:
 - 卡住 / 第二实现 / 深挖根因 → `/codex:rescue "具体任务"`(GPT-5.5,YOLO)
@@ -35,7 +35,7 @@ Claude × Codex(GPT-5.5)双引擎、低疲劳的干净开发工作流。
 6. 下次开会话 → 回到第 1 步,无缝接上。
 
 ## 在一个项目里用(一条命令搞定)
-duet 全局生效,但下列能力**依赖 git**(看 diff、Stop 提醒、YOLO worktree 隔离)。每个项目跑一次即可:
+duet 全局生效,但下列能力**依赖 git**(看 diff、YOLO worktree 隔离),且 **Stop 轻提醒只在跑过 init 的项目里生效**(以 `.duet/` 存在为准,不向别的仓库写文件)。每个项目跑一次即可:
 
 ```
 /duet:init
@@ -62,7 +62,7 @@ duet 全局生效,但下列能力**依赖 git**(看 diff、Stop 提醒、YOLO wo
 | `commands/init.md` | `/duet:init` | 项目一次性设置:git + 默认 gitignore(含 `__pycache__`)+ 运行时忽略 |
 | `scripts/auto-tidy.sh` | PostToolUse(Write\|Edit) | 按后缀自动检测 prettier/ruff/rustfmt/gofmt(不执行仓库内脚本) |
 | `scripts/session-start.sh` | SessionStart | 顶出 `.duet/next.md` |
-| `scripts/stop-remind.sh` | Stop | 未提交代码改动时提醒一次(非阻断) |
+| `scripts/stop-remind.sh` | Stop | 未提交代码改动时提醒一次(非阻断;仅 `.duet/` 存在的项目) |
 
 ## `.duet/` 目录约定(在你的项目里,不在插件里)
 - `next.md` —— 自动生成的"下一步",运行时状态,**gitignore**

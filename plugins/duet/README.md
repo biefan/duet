@@ -56,6 +56,8 @@ duet 全局生效,但下列能力**依赖 git**(看 diff、Stop 提醒、YOLO wo
 | 文件 | 触发点 | 说明 |
 |---|---|---|
 | `skills/clean-loop/SKILL.md` | `/duet:clean-loop` | 工作流大脑 |
+| `agents/planner.md` | 大任务动手前(可自动委派) | 独立上下文出结构方案 + 验证 handle(只读) |
+| `agents/verifier.md` | 声称完成后 | 全新上下文独立验收:跑测试、打边界、PASS/FAIL |
 | `commands/ship.md` | `/duet:ship` | 收工门禁 |
 | `commands/init.md` | `/duet:init` | 项目一次性设置:git + 默认 gitignore(含 `__pycache__`)+ 运行时忽略 |
 | `scripts/auto-tidy.sh` | PostToolUse(Write\|Edit) | 按后缀自动检测 prettier/ruff/rustfmt/gofmt(不执行仓库内脚本) |

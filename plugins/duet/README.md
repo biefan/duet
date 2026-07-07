@@ -15,8 +15,9 @@ Claude × Codex(GPT-5.5)双引擎、低疲劳的干净开发工作流。
 ## 触发速查(只有 2 个要手动,其余全自动)
 | 能力 | 怎么触发 | 用途 |
 |---|---|---|
-| `/duet:clean-loop` | 手动打,或接大任务时自动匹配 | 完整干净循环:探清→规划→小步写→每步验证→收拾→复审 |
+| `/duet:clean-loop` | 手动打,或接任务时自动匹配 | 先分诊 S/M/L/XL 动态伸缩:探清→规划→选引擎(Claude 或整段派 Codex)→小步写→每步验证→收拾→复审 |
 | `/duet:ship` | 手动打(做完/收工/提交前) | 收工门禁:收拾+验证+确认看过 diff+提示 Codex 复审+记下一步 |
+| `/duet:swarm` | 手动打(XL 级任务) | 多智能体编排:并行探查 / 多维审计+对抗验证 / 多方案评审(只读、重火力) |
 | auto-tidy | 全自动(改完文件即触发) | 自动格式化,乱不过夜 |
 | 收工连续性 | 全自动(每次开会话) | 顶出上次的 `.duet/next.md`(>14 天标"可能过时");新会话开场检测上次残留的未提交改动;compact 后提示自检任务状态 |
 | 轻提醒 | 全自动(该收工还没 ship 时) | 有未提交代码改动就戳一下(每会话仅一次;仅在用过 duet 的项目,即 `.duet/` 存在) |
@@ -59,6 +60,7 @@ duet 全局生效,但下列能力**依赖 git**(看 diff、YOLO worktree 隔离)
 | `agents/planner.md` | 大任务动手前(可自动委派) | 独立上下文出结构方案 + 验证 handle(只读) |
 | `agents/verifier.md` | 声称完成后 | 全新上下文独立验收:跑测试、打边界、PASS/FAIL |
 | `commands/ship.md` | `/duet:ship` | 收工门禁 |
+| `commands/swarm.md` | `/duet:swarm` | XL 级多智能体编排(explore / review / design 三模式,只读) |
 | `commands/init.md` | `/duet:init` | 项目一次性设置:git + 默认 gitignore(含 `__pycache__`)+ 运行时忽略 |
 | `scripts/auto-tidy.sh` | PostToolUse(Write\|Edit) | 按后缀自动检测 prettier/ruff/rustfmt/gofmt(不执行仓库内脚本) |
 | `scripts/session-start.sh` | SessionStart | 顶出 `.duet/next.md`(过期标注)+ 开场残留改动检测 + compact 后自检提示 |

@@ -159,6 +159,25 @@ mkdir -p "$WORK/i1/sub" && ( cd "$WORK/i1/sub" && bash "$SCRIPTS/duet-init.sh" >
 ( cd "$WORK/i1/sub" && printf 'x\n' > ../.duet/journal.md && printf 'y\n' > ../.duet/next.md )
 eq "journal/next 在 * 下被忽略" "0" "$(git -C "$WORK/i1" status --porcelain -uall | grep -c '\.duet' || true)"
 
+# ---------- 静态:swarm 命令 / 动态分诊 / codex 镜像 ----------
+echo "# 静态检查(v0.7 组件)"
+SW="$ROOT/plugins/duet/commands/swarm.md"
+[ -f "$SW" ] && ok "swarm.md 存在" || bad "swarm.md 存在"
+has "swarm 有 description" "description:" "$(head -5 "$SW")"
+has "swarm 含只读红线" "全程只读" "$(cat "$SW")"
+not_has "swarm 权限无裸 Bash(只读由权限保证)" "Bash" "$(head -5 "$SW")"
+has "swarm 有 Workflow 退化路径" "退化为并行 Agent" "$(cat "$SW")"
+CL="$ROOT/plugins/duet/skills/clean-loop/SKILL.md"
+has "clean-loop 含分诊表" "先分诊" "$(cat "$CL")"
+has "clean-loop 含引擎选择" "选实现引擎" "$(cat "$CL")"
+has "clean-loop 接入 swarm" "/duet:swarm" "$(cat "$CL")"
+for s in duet-clean-loop duet-ship; do
+  f="$ROOT/codex-skills/$s/SKILL.md"
+  [ -f "$f" ] && ok "codex 镜像 $s 存在" || bad "codex 镜像 $s 存在"
+  has "codex 镜像 $s name 与目录一致" "name: \"$s\"" "$(head -3 "$f")"
+  has "codex 镜像 $s 共用 .duet 约定" ".duet/next.md" "$(cat "$f")"
+done
+
 # ---------- 汇总 ----------
 printf '\n%d passed, %d failed, %d skipped\n' "$pass" "$fail" "$skip"
 [ "$fail" -eq 0 ]

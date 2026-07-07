@@ -56,12 +56,31 @@ codex-skills/                     # Codex CLI 侧镜像(duet-clean-loop / duet-s
 tests/run.sh                      # 离线回归(stdin 模拟钩子输入,70+ 断言)
 ```
 
-## 在 Codex CLI 里也用 duet(可选)
+## 在 Codex CLI 里安装(可选)
 
+duet 的核心工作流有一份 Codex 镜像(`codex-skills/`),装进 Codex CLI 的 skills 目录即可用。要求 Codex CLI 支持 `~/.codex/skills`(0.142+ 验证过)。
+
+**方式 A · 不 clone,直接下载(推荐)**
+
+```bash
+mkdir -p ~/.codex/skills/duet-clean-loop ~/.codex/skills/duet-ship
+curl -fsSL https://raw.githubusercontent.com/biefan/duet/master/codex-skills/duet-clean-loop/SKILL.md -o ~/.codex/skills/duet-clean-loop/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/biefan/duet/master/codex-skills/duet-ship/SKILL.md -o ~/.codex/skills/duet-ship/SKILL.md
 ```
+
+**方式 B · 已 clone 本仓库**
+
+```bash
 mkdir -p ~/.codex/skills && cp -r codex-skills/duet-clean-loop codex-skills/duet-ship ~/.codex/skills/
 ```
-两边共用项目里的 `.duet/` 约定:Codex 收工写的 `next.md`,回到 Claude Code 开会话自动顶出来;复审方向反转(Codex 写的交 Claude 审)。
+
+**验证**:`ls ~/.codex/skills/` 应出现 `duet-clean-loop` 和 `duet-ship`;新开 Codex 会话生效。
+
+**怎么用**:不用记命令——接到实现类任务(feature / fix / refactor)Codex 会按 description 自动匹配 `duet-clean-loop`;收工 / 提交前说"走 duet-ship 收工门禁"即可。也可在提示里直接点名 skill。
+
+**更新 / 卸载**:更新 = 重跑安装命令覆盖;卸载 = 删掉 `~/.codex/skills/` 下这两个目录。
+
+两边共用项目里的 `.duet/` 约定:Codex 收工写的 `next.md`,回到 Claude Code 开会话自动顶出来,跨引擎不丢线;复审方向反转(Codex 写的交 Claude 审)。Codex 侧没有 hooks,自动格式化 / 开会话顶线 / 收工提醒仍是 Claude Code 侧专属。
 
 ## 开发
 

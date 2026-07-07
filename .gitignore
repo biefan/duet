@@ -1,0 +1,10 @@
+
+# >>> duet >>> (duet 默认忽略:运行时产物,勿手改此块)
+.duet/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+# <<< duet <<<

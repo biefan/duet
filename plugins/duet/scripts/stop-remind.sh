@@ -33,8 +33,9 @@ changes="$(git status --porcelain -uall 2>/dev/null \
   | grep -cE '\.(ts|tsx|js|jsx|mjs|cjs|py|rs|go|java|kt|rb|php|c|cc|cpp|h|hpp|cs|swift|scala)$' || true)"
 [ "${changes:-0}" -gt 0 ] || exit 0
 
-# duet 自身运行时文件不入库(即使项目没配根 .gitignore)
-[ -f .duet/.gitignore ] || printf 'next.md\n.reminded-sessions\n.last-remind\n' > .duet/.gitignore 2>/dev/null || true
+# duet 自身运行时文件不入库(即使项目没配根 .gitignore);"*" 自动覆盖以后新增的运行时文件(如 journal.md)
+# 缺失或还是旧版逐文件列表(无 "*" 行)都写成 "*",顺带升级 0.5 初始化过的项目
+grep -qxF '*' .duet/.gitignore 2>/dev/null || printf '*\n' > .duet/.gitignore 2>/dev/null || true
 
 # 去重
 if [ -n "${sid:-}" ]; then

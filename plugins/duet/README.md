@@ -18,7 +18,7 @@ Claude × Codex(GPT-5.5)双引擎、低疲劳的干净开发工作流。
 | `/duet:clean-loop` | 手动打,或接大任务时自动匹配 | 完整干净循环:探清→规划→小步写→每步验证→收拾→复审 |
 | `/duet:ship` | 手动打(做完/收工/提交前) | 收工门禁:收拾+验证+确认看过 diff+提示 Codex 复审+记下一步 |
 | auto-tidy | 全自动(改完文件即触发) | 自动格式化,乱不过夜 |
-| 收工连续性 | 全自动(每次开会话) | 顶出上次的 `.duet/next.md`,接上活 |
+| 收工连续性 | 全自动(每次开会话) | 顶出上次的 `.duet/next.md`(>14 天标"可能过时");新会话开场检测上次残留的未提交改动;compact 后提示自检任务状态 |
 | 轻提醒 | 全自动(该收工还没 ship 时) | 有未提交代码改动就戳一下(每会话仅一次;仅在用过 duet 的项目,即 `.duet/` 存在) |
 
 配合 codex:
@@ -61,13 +61,14 @@ duet 全局生效,但下列能力**依赖 git**(看 diff、YOLO worktree 隔离)
 | `commands/ship.md` | `/duet:ship` | 收工门禁 |
 | `commands/init.md` | `/duet:init` | 项目一次性设置:git + 默认 gitignore(含 `__pycache__`)+ 运行时忽略 |
 | `scripts/auto-tidy.sh` | PostToolUse(Write\|Edit) | 按后缀自动检测 prettier/ruff/rustfmt/gofmt(不执行仓库内脚本) |
-| `scripts/session-start.sh` | SessionStart | 顶出 `.duet/next.md` |
+| `scripts/session-start.sh` | SessionStart | 顶出 `.duet/next.md`(过期标注)+ 开场残留改动检测 + compact 后自检提示 |
 | `scripts/stop-remind.sh` | Stop | 未提交代码改动时提醒一次(非阻断;仅 `.duet/` 存在的项目) |
 
 ## `.duet/` 目录约定(在你的项目里,不在插件里)
-- `next.md` —— 自动生成的"下一步",运行时状态,**gitignore**
-- `.reminded-sessions` —— 提醒去重记录,运行时状态,**gitignore**
-- `.last-remind` —— 无 session_id 时的提醒时间戳,运行时状态,**gitignore**
+整个目录都是运行时状态,由 `.duet/.gitignore`(内容 `*`)整体自忽略,不进 diff / 提交:
+- `next.md` —— "下一步",每次 ship 收尾覆写,开会话自动顶出(>14 天标"可能过时")
+- `journal.md` —— 追加式工作日志(日期 / 做了什么 / 怎么验证 / 踩的坑),项目记忆,不注入上下文、需要时自己查
+- `.reminded-sessions` / `.last-remind` —— 提醒去重 / 节流记录
 
 ## 最省心的记法
 平时只管 **`/duet:clean-loop` 开工、`/duet:ship` 收工**,中间卡住 `/codex:rescue`,剩下的 duet 自动兜着。

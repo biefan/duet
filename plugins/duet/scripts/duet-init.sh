@@ -22,7 +22,7 @@ if grep -q '>>> duet >>>' "$gi" 2>/dev/null; then
 else
   {
     printf '\n# >>> duet >>> (duet 默认忽略:运行时产物,勿手改此块)\n'
-    printf '.duet/next.md\n.duet/.reminded-sessions\n.duet/.last-remind\n'
+    printf '.duet/\n'
     printf '__pycache__/\n*.py[cod]\n.pytest_cache/\n.mypy_cache/\n.ruff_cache/\n'
     printf '.DS_Store\n'
     printf '# <<< duet <<<\n'
@@ -31,12 +31,9 @@ else
 fi
 
 # 3) <root>/.duet/.gitignore(duet 运行时文件自忽略)
+# 统一写 "*":自动覆盖以后新增的运行时文件(如 journal.md);每次覆写,顺带升级旧版的逐文件列表
 mkdir -p "$root/.duet" 2>/dev/null || true
-if [ -f "$root/.duet/.gitignore" ]; then
-  echo "duet:init  → .duet/.gitignore 已存在,跳过"
-else
-  printf 'next.md\n.reminded-sessions\n.last-remind\n' > "$root/.duet/.gitignore"
-  echo "duet:init  → 建 $root/.duet/.gitignore"
-fi
+printf '*\n' > "$root/.duet/.gitignore"
+echo "duet:init  → 写 $root/.duet/.gitignore(*)"
 
 echo "duet:init  ✓ 完成。日常:/duet:clean-loop 开工,/duet:ship 收工。"

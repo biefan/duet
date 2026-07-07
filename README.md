@@ -52,8 +52,16 @@ plugins/duet/                     # 插件本体
 ├── agents/                       # duet-planner(出方案) / duet-verifier(独立验收)
 ├── hooks/hooks.json              # PostToolUse / SessionStart / Stop
 └── scripts/                      # auto-tidy / session-start / stop-remind / duet-init
+tests/run.sh                      # 离线回归(stdin 模拟钩子输入,57+ 断言)
 ```
+
+## 开发
+
+```
+bash tests/run.sh
+```
+改任何 hook 脚本后必跑;全部用 stdin JSON 模拟钩子输入,离线、无副作用(临时目录内)。
 
 ## 状态
 
-v0.5.0 —— 经真项目 demo、深度对抗测试、Codex(GPT-5.5)只读独立复审加固(修掉不可信仓库 RCE、路径引号、init 定位等真问题),并加入 duet-planner / duet-verifier 两个只读子代理。
+v0.6.1 —— 经真项目 demo、深度对抗测试、多轮 Codex(GPT-5.5)只读独立复审加固(修掉不可信仓库 RCE、路径引号、init/门禁的 git 顶层定位等真问题);含 planner / verifier 子代理、长时间工作与项目记忆支持(残留检测 / compact 自检 / journal / 过期标注),回归测试已固化进 `tests/run.sh`。

@@ -9,7 +9,7 @@ input="$(cat)"
 
 # 从钩子 stdin 的 JSON 里取被编辑文件路径(优先 jq,退化到 grep/sed)
 if command -v jq >/dev/null 2>&1; then
-  file="$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty')"
+  file="$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty' 2>/dev/null)"
 else
   file="$(printf '%s' "$input" | grep -o '"file_path"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')"
 fi

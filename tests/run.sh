@@ -159,6 +159,19 @@ mkdir -p "$WORK/i1/sub" && ( cd "$WORK/i1/sub" && bash "$SCRIPTS/duet-init.sh" >
 ( cd "$WORK/i1/sub" && printf 'x\n' > ../.duet/journal.md && printf 'y\n' > ../.duet/next.md )
 eq "journal/next 在 * 下被忽略" "0" "$(git -C "$WORK/i1" status --porcelain -uall | grep -c '\.duet' || true)"
 
+# ---------- duet-init:codex YOLO 体检(假 HOME,不碰真配置) ----------
+echo "# duet-init codex 体检"
+FH="$WORK/fakehome" && mkdir -p "$FH/.codex" "$WORK/i2"
+printf 'approval_policy = "never"\nsandbox_mode = "danger-full-access"\n' > "$FH/.codex/config.toml"
+out="$(cd "$WORK/i2" && HOME="$FH" bash "$SCRIPTS/duet-init.sh")"
+has "YOLO 已配置:检出" "YOLO 已配置" "$out"
+printf 'approval_policy = "on-request"\nsandbox_mode = "workspace-write"\n' > "$FH/.codex/config.toml"
+out="$(cd "$WORK/i2" && HOME="$FH" bash "$SCRIPTS/duet-init.sh")"
+has "非 YOLO:警告并给改法" "未开 YOLO" "$out"
+FH2="$WORK/fakehome2" && mkdir -p "$FH2"
+out="$(cd "$WORK/i2" && HOME="$FH2" bash "$SCRIPTS/duet-init.sh")"
+has "无 codex 配置:提示" "未检测到 codex" "$out"
+
 # ---------- 静态:swarm 命令 / 动态分诊 / codex 镜像 ----------
 echo "# 静态检查(v0.7 组件)"
 SW="$ROOT/plugins/duet/commands/swarm.md"

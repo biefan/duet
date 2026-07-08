@@ -110,7 +110,7 @@ description: 实现代码改动时的干净开发循环——先分诊 S/M/L/XL 
 | 看后台进度 / 取结果 | `/codex:status` · `/codex:result` | |
 | 没装 / 没登录 | `/codex:setup` | 首次准备 Codex |
 
-给 Codex 的 rescue 提示要点:一次一个明确任务;告诉它"做完长什么样";交代验证方式。**你的 codex 默认 YOLO(无审批、full-access、直接改盘)**,所以开跑前先切到干净分支 / worktree,泡完先看 diff 再信。
+给 Codex 的 rescue 提示要点:一次一个明确任务;告诉它"做完长什么样";交代验证方式。**codex 必须是 YOLO(approval_policy=never + danger-full-access),否则派活卡在等审批等于没派**——`/duet:init` 会体检并给改法。YOLO 直接改盘,所以护栏是硬的:开跑前先切干净分支 / worktree,泡完先看 diff 再信。安全靠护栏,不靠审批闸。
 
 ## 配套习惯(X / 社区验证,顺手就少累)
 - **每个逻辑单元提醒用户 commit 一次**(经用户确认后可代提交;不自作主张 commit),别攒到收工:坏决定能单独回滚,最终 diff 干净、好复审——codex YOLO 泡完尤其要先看 diff 再信。

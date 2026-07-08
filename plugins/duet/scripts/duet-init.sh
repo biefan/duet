@@ -36,4 +36,19 @@ mkdir -p "$root/.duet" 2>/dev/null || true
 printf '*\n' > "$root/.duet/.gitignore"
 echo "duet:init  → 写 $root/.duet/.gitignore(*)"
 
+# 4) codex YOLO 体检(只检查不改配置)——duet 的 rescue / 整段派活依赖无审批模式,否则卡在等审批干不动
+cfg="$HOME/.codex/config.toml"
+if [ -f "$cfg" ]; then
+  if grep -qE '^[[:space:]]*approval_policy[[:space:]]*=[[:space:]]*"never"' "$cfg" && grep -qE '^[[:space:]]*sandbox_mode[[:space:]]*=[[:space:]]*"danger-full-access"' "$cfg"; then
+    echo "duet:init  → codex YOLO 已配置(approval_policy=never + danger-full-access)"
+  else
+    echo "duet:init  ⚠ codex 未开 YOLO——rescue/整段派活会卡审批。到 ~/.codex/config.toml 设:"
+    echo '             approval_policy = "never"'
+    echo '             sandbox_mode = "danger-full-access"'
+    echo "             (安全由 duet 护栏兜:干净分支/worktree + 亲眼看 diff + verifier 验收)"
+  fi
+else
+  echo "duet:init  → 未检测到 codex(~/.codex/config.toml);双引擎能力需先装 Codex CLI"
+fi
+
 echo "duet:init  ✓ 完成。日常:/duet:clean-loop 开工,/duet:ship 收工。"

@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "自研:Claude × Codex 双引擎、低疲劳的干净开发工作流插件",
-    "version": "0.8.0"
+    "version": "0.8.1"
   },
   "plugins": [
     {

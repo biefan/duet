@@ -188,6 +188,8 @@ has "clean-loop 含派活纪律" "简报五要素" "$(cat "$CL")"
 has "clean-loop 含耐心等待" "别反复刷状态" "$(cat "$CL")"
 has "clean-loop 含活状态 checkpoint" "活状态文件" "$(cat "$CL")"
 has "codex 镜像含活状态 checkpoint" "活状态文件" "$(cat "$ROOT/codex-skills/duet-clean-loop/SKILL.md")"
+has "clean-loop 含双记忆兼容" "双记忆兼容" "$(cat "$CL")"
+has "codex 镜像含双记忆兼容(共享层为准)" "以共享层为准" "$(cat "$ROOT/codex-skills/duet-clean-loop/SKILL.md")"
 for s in duet-clean-loop duet-ship; do
   f="$ROOT/codex-skills/$s/SKILL.md"
   [ -f "$f" ] && ok "codex 镜像 $s 存在" || bad "codex 镜像 $s 存在"

@@ -7,6 +7,8 @@ description: "Use when implementing code changes (feature / fix / refactor / mul
 
 目的:代码写出来就干净、每步可验,掐断"乱代码返工循环"和"事情没关上"。与 Claude Code 侧的 duet 插件共用 `.duet/` 约定,两个引擎接力不丢线。
 
+**双记忆兼容**:duet 里 Claude 为主、你(Codex)为辅;你的私有记忆与 AGENTS.md / 项目 `.duet/` 等共享层冲突时,以共享层为准。
+
 ## 先分诊(流程按任务伸缩)
 - **S** 一句话说清、单点低风险 → 直接改 + 顺手验证,不套循环。
 - **M** 单文件 / 小范围、目标清晰 → 简版:快速探清 → 定验证 handle → 小步写 → 验证 → 收拾。

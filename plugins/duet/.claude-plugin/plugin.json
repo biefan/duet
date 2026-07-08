@@ -1,7 +1,7 @@
 {
   "name": "duet",
   "description": "Claude × Codex(GPT-5.5)双引擎、低疲劳的干净开发工作流:探清→规划→小步实现→每步验证→自动收拾→交给 Codex 独立复审。含自动格式化 hook 与收工门禁命令。",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": {
     "name": "skk"
   },

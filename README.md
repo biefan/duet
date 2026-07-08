@@ -91,4 +91,4 @@ bash tests/run.sh
 
 ## 状态
 
-v0.7.0 —— 动态工作流(分诊 S/M/L/XL 伸缩 + `/duet:swarm` 多智能体编排)+ 双引擎角色互换(Codex 可整段接实现)+ Codex CLI 侧镜像(共用 `.duet/` 跨引擎续线)。此前:多轮 Codex(GPT-5.5)复审加固(RCE、路径引号、git 顶层定位等真问题)、planner / verifier 子代理、长时间工作与项目记忆(残留检测 / compact 自检 / journal / 过期标注)、回归测试固化于 `tests/run.sh`。
+v0.8.0 —— 长时间工作断点(`.duet/next.md` 作活状态文件,每片 checkpoint,断会话/compact 随时接上)+ 派活纪律(子代理简报五要素、结果含糊重派、主线程耐心等待不空转)。此前:动态工作流(分诊 S/M/L/XL 伸缩 + `/duet:swarm` 多智能体编排)+ 双引擎角色互换(Codex 可整段接实现)+ Codex CLI 侧镜像(共用 `.duet/` 跨引擎续线);更早:多轮 Codex(GPT-5.5)复审加固(RCE、路径引号、git 顶层定位等真问题)、planner / verifier 子代理、长时间工作与项目记忆(残留检测 / compact 自检 / journal / 过期标注)、回归测试固化于 `tests/run.sh`。

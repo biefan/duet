@@ -23,6 +23,9 @@ description: "Use when implementing code changes (feature / fix / refactor / mul
 ## 独立复审(双引擎,方向反转)
 你(Codex/GPT)写的代码,盲区要靠**另一个引擎**看:收工前建议用户回 Claude Code 让 Claude 复审这份 diff(它的 `/duet:ship` 门禁会做),或至少开一个全新无偏见的会话按验证 handle 独立验收。自己审自己不算数。
 
+## 长时间任务:next.md 当活状态文件
+L 级 / 多小时任务,每完成一片就顺手覆写 git 顶层 `.duet/next.md`:"做到哪 / 下一片 / 验证 handle"(两三行)。断会话随时能接上,换到 Claude Code 侧也能接——两边共用这份状态。
+
 ## 收尾(乱不过夜)
 - 把"下一步 / 明天第一件事"写进 git 顶层的 `.duet/next.md`(一两行,覆写);未完成的跨文件工作记进"未完成"区。Claude Code 侧开会话会自动顶出来。
 - 往 `.duet/journal.md` 末尾**追加**一条(3-5 行):日期、做了什么、怎么验证的、踩的坑。
